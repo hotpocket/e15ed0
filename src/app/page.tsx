@@ -1,6 +1,6 @@
 import React from "react";
 import DAGRenderer from "~/components/DAGRenderer";
-import type { ActionBlueprintGraphDescription } from "~/types/graphTypes";
+import type { ActionBlueprintGraphDescription } from "~/types/ActionBlueprintGraphDescription";
 
 export default async function HomePage() {
   // Add logging to debug the request
