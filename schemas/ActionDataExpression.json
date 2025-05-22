@@ -1,0 +1,16 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "output_key": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "output_key"
+  ],
+  "type": "object"
+}

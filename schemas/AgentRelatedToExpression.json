@@ -1,0 +1,28 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "agent_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "roles": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "agent_ids"
+  ],
+  "type": "object"
+}

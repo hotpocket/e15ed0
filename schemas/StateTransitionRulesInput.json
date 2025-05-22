@@ -1,0 +1,92 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "state_transition_rules_if": {
+      "description": "The expression that determines when the automatic state transition can execute. The expression should return a boolean value.",
+      "discriminator": {
+        "mapping": {
+          "action_component_data": "./ActionComponentDataExpression.json",
+          "action_data": "./ActionDataExpression.json",
+          "agent_directly_assigned": "./AgentDirectlyAssignedExpression.json",
+          "agent_related_to": "./AgentRelatedToExpression.json",
+          "aggregate": "./AggregateExpression.json",
+          "and": "./AndExpression.json",
+          "binary": "./BinaryExpression.json",
+          "client_organisation": "./ClientOrganisationExpression.json",
+          "column": "./ColumnExpression.json",
+          "exists": "./ExistsExpression.json",
+          "form_field": "./FormFieldExpression.json",
+          "literal": "./LiteralExpression.json",
+          "not": "./NotExpression.json",
+          "or": "./OrExpression.json",
+          "property": "./PropertyExpression.json",
+          "task_owner": "./TaskOwnerExpression.json"
+        },
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "./ActionComponentDataExpression.json"
+        },
+        {
+          "$ref": "./ActionDataExpression.json"
+        },
+        {
+          "$ref": "./AgentDirectlyAssignedExpression.json"
+        },
+        {
+          "$ref": "./AgentRelatedToExpression.json"
+        },
+        {
+          "$ref": "./AggregateExpression.json"
+        },
+        {
+          "$ref": "./AndExpression.json"
+        },
+        {
+          "$ref": "./BinaryExpression.json"
+        },
+        {
+          "$ref": "./ClientOrganisationExpression.json"
+        },
+        {
+          "$ref": "./ColumnExpression.json"
+        },
+        {
+          "$ref": "./ExistsExpression.json"
+        },
+        {
+          "$ref": "./FormFieldExpression.json"
+        },
+        {
+          "$ref": "./LiteralExpression.json"
+        },
+        {
+          "$ref": "./NotExpression.json"
+        },
+        {
+          "$ref": "./OrExpression.json"
+        },
+        {
+          "$ref": "./PropertyExpression.json"
+        },
+        {
+          "$ref": "./TaskOwnerExpression.json"
+        }
+      ]
+    },
+    "state_transition_rules_then": {
+      "description": "The state this form should move to if the condition is true, once all fields are filled.",
+      "enum": [
+        "pending_approval",
+        "complete"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "state_transition_rules_if",
+    "state_transition_rules_then"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,96 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "A URL to the JSON Schema for this object.",
+      "examples": [
+        "https://example.com/schemas/ActionBranchDescription.json"
+      ],
+      "format": "uri",
+      "readOnly": true,
+      "type": "string"
+    },
+    "condition": {
+      "additionalProperties": {},
+      "description": "The condition that must be met for this branch to be taken",
+      "examples": [
+        {
+          "left": {
+            "object": "client",
+            "property": "name",
+            "type": "property"
+          },
+          "operator": "==",
+          "right": {
+            "type": "literal",
+            "value": "John"
+          },
+          "type": "binary"
+        }
+      ],
+      "type": "object"
+    },
+    "created_at": {
+      "description": "The date/time the branch was created",
+      "examples": [
+        "2024-10-29T11:22:33.027873-03:00"
+      ],
+      "format": "date-time",
+      "type": "string"
+    },
+    "created_by": {
+      "description": "The responsible for creating the branch",
+      "examples": [
+        "test@avantos.ai"
+      ],
+      "type": "string"
+    },
+    "description": {
+      "description": "Detailed description of the branch",
+      "examples": [
+        "Description for example branch"
+      ],
+      "type": "string"
+    },
+    "id": {
+      "description": "Unique identifier for the branch",
+      "examples": [
+        "b_01jbcagb1wfy2v0g1xcq53y4rn"
+      ],
+      "type": "string"
+    },
+    "name": {
+      "description": "Human-readable name of the branch",
+      "examples": [
+        "Dummy Branch"
+      ],
+      "type": "string"
+    },
+    "tenant_id": {
+      "description": "Identifier of the tenant this branch belongs to",
+      "examples": [
+        "123"
+      ],
+      "type": "string"
+    },
+    "updated_at": {
+      "description": "The last time the branch was updated",
+      "examples": [
+        "2024-10-29T11:22:33.02018-03:00"
+      ],
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "tenant_id",
+    "name",
+    "description",
+    "condition",
+    "created_by",
+    "created_at",
+    "updated_at"
+  ],
+  "type": "object"
+}

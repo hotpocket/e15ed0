@@ -1,0 +1,24 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "component_key": {
+      "type": "string"
+    },
+    "property": {
+      "type": "string"
+    },
+    "task_type": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "component_key",
+    "task_type",
+    "property"
+  ],
+  "type": "object"
+}

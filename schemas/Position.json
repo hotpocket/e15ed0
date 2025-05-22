@@ -1,0 +1,18 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "x": {
+      "format": "double",
+      "type": "number"
+    },
+    "y": {
+      "format": "double",
+      "type": "number"
+    }
+  },
+  "required": [
+    "x",
+    "y"
+  ],
+  "type": "object"
+}

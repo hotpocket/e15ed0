@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "number": {
+      "description": "The number of units (minutes, hours, days) to wait",
+      "examples": [
+        1
+      ],
+      "format": "double",
+      "type": "number"
+    },
+    "unit": {
+      "description": "The unit of time",
+      "enum": [
+        "minutes",
+        "hours",
+        "days"
+      ],
+      "examples": [
+        "minutes"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "number",
+    "unit"
+  ],
+  "type": "object"
+}

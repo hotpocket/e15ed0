@@ -1,0 +1,26 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "field": {
+      "type": "string"
+    },
+    "jsonPath": {
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "field",
+    "jsonPath"
+  ],
+  "type": "object"
+}
