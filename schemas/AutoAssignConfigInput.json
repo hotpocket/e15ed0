@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "form_field": {
+      "description": "The field of the form to use for the auto-assign configuration (used for form_field_email)",
+      "type": "string"
+    },
+    "form_key": {
+      "description": "The key of the form to use for the auto-assign configuration (used for form_field_email)",
+      "type": "string"
+    },
+    "type": {
+      "description": "The type of auto-assign configuration to use",
+      "enum": [
+        "client_org_role",
+        "primary_email",
+        "form_field_email"
+      ],
+      "type": "string"
+    },
+    "value": {
+      "description": "The value to use for the auto-assign configuration (used for client_org_role and primary_email)",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "type": "object"
+}

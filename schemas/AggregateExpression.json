@@ -1,0 +1,20 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "aggregate": {
+      "type": "string"
+    },
+    "column": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "aggregate",
+    "column"
+  ],
+  "type": "object"
+}

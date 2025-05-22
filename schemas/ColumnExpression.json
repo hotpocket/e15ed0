@@ -1,0 +1,16 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "column": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "column"
+  ],
+  "type": "object"
+}

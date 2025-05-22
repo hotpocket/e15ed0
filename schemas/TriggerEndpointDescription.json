@@ -1,0 +1,183 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "description": "A URL to the JSON Schema for this object.",
+      "examples": [
+        "https://example.com/schemas/TriggerEndpointDescription.json"
+      ],
+      "format": "uri",
+      "readOnly": true,
+      "type": "string"
+    },
+    "created_at": {
+      "description": "The creation time of the trigger endpoint",
+      "examples": [
+        "2021-01-01T00:00:00Z"
+      ],
+      "format": "date-time",
+      "type": "string"
+    },
+    "id": {
+      "examples": [
+        "te_213j32"
+      ],
+      "type": "string"
+    },
+    "max_retries": {
+      "description": "The maximum number of retries for the endpoint",
+      "examples": [
+        3
+      ],
+      "format": "int64",
+      "type": "integer"
+    },
+    "name": {
+      "description": "The name of the trigger endpoint",
+      "examples": [
+        "Send Email"
+      ],
+      "type": "string"
+    },
+    "output_mapping": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "The output mapping for the endpoint",
+      "examples": [
+        {
+          "id": ".data.value.id"
+        }
+      ],
+      "type": "object"
+    },
+    "path_template": {
+      "description": "The path of the endpoint; must start with a /",
+      "examples": [
+        "/api/v1/customer/{{.customer_id}}/do/something/"
+      ],
+      "type": "string"
+    },
+    "path_template_variables": {
+      "description": "The variables in the path template",
+      "examples": [
+        [
+          "customer_id"
+        ]
+      ],
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "payload_template": {
+      "additionalProperties": {},
+      "description": "The payload template for the endpoint",
+      "examples": [
+        {
+          "subject": "{{.subject}}",
+          "to": "{{.to}}"
+        }
+      ],
+      "type": "object"
+    },
+    "payload_template_variables": {
+      "description": "The variables in the payload template",
+      "examples": [
+        [
+          "to",
+          "subject"
+        ]
+      ],
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "query_parameter_template": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "The query parameter template for the endpoint",
+      "examples": [
+        {
+          "user_id": "{{.user_id}}"
+        }
+      ],
+      "type": "object"
+    },
+    "query_parameter_template_variables": {
+      "description": "The variables in the query parameter template",
+      "examples": [
+        [
+          "user_id"
+        ]
+      ],
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "request_method": {
+      "description": "The HTTP request method for the endpoint",
+      "enum": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
+      "examples": [
+        "POST"
+      ],
+      "type": "string"
+    },
+    "timeout_seconds": {
+      "description": "The timeout in seconds for requests to the trigger service",
+      "examples": [
+        10
+      ],
+      "format": "int64",
+      "type": "integer"
+    },
+    "trigger_service_id": {
+      "description": "The trigger service ID",
+      "examples": [
+        "ts_213j32"
+      ],
+      "type": "string"
+    },
+    "updated_at": {
+      "description": "The last update time of the trigger endpoint",
+      "examples": [
+        "2021-01-01T00:00:00Z"
+      ],
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "trigger_service_id",
+    "name",
+    "request_method",
+    "path_template",
+    "query_parameter_template",
+    "payload_template",
+    "output_mapping",
+    "created_at",
+    "updated_at",
+    "path_template_variables",
+    "query_parameter_template_variables",
+    "payload_template_variables"
+  ],
+  "type": "object"
+}

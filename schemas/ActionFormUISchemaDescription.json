@@ -1,0 +1,22 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "elements": {
+      "description": "The form UI schema elements. See jsonforms.io for more details",
+      "items": {},
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "type": {
+      "description": "The type of the form UI schema",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "elements"
+  ],
+  "type": "object"
+}
