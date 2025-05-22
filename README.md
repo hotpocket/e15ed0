@@ -2,7 +2,7 @@
 The original challenge instructions are cached [here](./orig_challenge.mhtml)
 
 ### API Calls
-The original [the mock service](https://github.com/mosaic-avantos/frontendchallengeserver) is now served by NextJS via a url that conforms to [the doc](https://api.avantos-dev.io/docs#/operations/action-blueprint-graph-get). Following the example from the mock service the params are ignored however, and instead the static `graph.json` file is returned.
+The original [mock service](https://github.com/mosaic-avantos/frontendchallengeserver) is now served by NextJS via a url that conforms to [the doc](https://api.avantos-dev.io/docs#/operations/action-blueprint-graph-get). Following the example from the mock service the params are ignored however, and instead the static `graph.json` file is returned.
 
 In contrast to the mock service, which would return a 404 if an unhandled http method was called, this NextJS service will return a 405 Method Not Allowed.
 
