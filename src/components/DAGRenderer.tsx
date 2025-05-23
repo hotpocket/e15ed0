@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   ReactFlow,
   Controls,
@@ -11,7 +11,11 @@ import {
   addEdge,
 } from "@xyflow/react";
 import type { Node, Edge, Connection } from "@xyflow/react";
-import type { ActionBlueprintGraphDescription } from "~/types/ActionBlueprintGraphDescription";
+import type {
+  ActionBlueprintGraphDescription,
+  ActionBlueprintGraphNodeDescription,
+  ActionFormDescription,
+} from "~/types/ActionBlueprintGraphDescription";
 import "@xyflow/react/dist/style.css";
 
 const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
@@ -41,17 +45,89 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
     [setEdges],
   );
 
+  // id->node lookup table
+  const nodesById = useMemo(() => {
+    const map: Record<string, ActionBlueprintGraphNodeDescription> = {};
+    graphData.nodes?.forEach((node) => {
+      map[node.id] = node;
+    });
+    return map;
+  }, [graphData.nodes]);
+
+  // id->form lookup table
+  const formsById = useMemo(() => {
+    const map: Record<string, ActionFormDescription> = {};
+    graphData.forms?.forEach((form) => {
+      map[form.id] = form;
+    });
+    return map;
+  }, [graphData.forms]);
+
+  // walk the graph to find dependencies of a form node
+  function getFormDeps(formId: string): string[] {
+    const preReqIds = nodesById[formId]?.data.prerequisites ?? [];
+    const formDeps = new Set<string>();
+    for (const preReqId of preReqIds) {
+      if (typeof preReqId === "string") {
+        const depForms = getFormDeps(preReqId);
+        depForms.forEach((depFormId) => formDeps.add(depFormId));
+        formDeps.add(preReqId);
+      }
+    }
+    return [...formDeps];
+  }
+
+  // fetch and seperate direct & transient dependencies when a user clicks a node
+  function genPrefillData(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    const nodeId = (e.target as HTMLElement).getAttribute("data-id");
+    if (!nodeId) return;
+    // it was node click
+    const node = nodesById[nodeId];
+    if (!node) return;
+    // we found the node's data
+    const formId = node.data.component_id;
+    const formFields = Object.keys(formsById[formId]!.field_schema.properties);
+    const formDeps = getFormDeps(nodeId);
+    const directDeps = node.data.prerequisites ?? [];
+    const transDeps = formDeps.filter((id) => !directDeps.includes(id));
+
+    const iterateDeps = (deps: string[]): Record<string, string[]> => {
+      const depsMap: Record<string, string[]> = {};
+      deps.forEach((depFormId) => {
+        const node = nodesById[depFormId];
+        if (!node) return;
+        const nodeFormId = node.data.component_id;
+        const formProps = formsById[nodeFormId]?.field_schema.properties;
+        if (!formProps) return;
+        const props = Object.keys(formProps);
+        depsMap[node.data.name] = props;
+      });
+      return depsMap;
+    };
+
+    // maybe expose this via onNodeClick so parent can handle the UI...
+    const prefillData = {
+      name: node.data.name,
+      fields: formFields,
+      direct_dependencies: iterateDeps(directDeps),
+      transient_dependencies: iterateDeps(transDeps),
+    };
+
+    // logged to console for now. will use this to populate a UI in the next step
+    console.log({ [prefillData.name]: prefillData.fields });
+    console.log("Direct dependencies:");
+    console.log(prefillData.direct_dependencies);
+    console.log("Transitive dependencies:");
+    console.log(prefillData.transient_dependencies);
+  }
+
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         fitView
-        onClick={() => {
-          console.log(initialNodes);
-          console.log(initialEdges);
-          console.log(graphData);
-        }}
+        onClick={genPrefillData}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
