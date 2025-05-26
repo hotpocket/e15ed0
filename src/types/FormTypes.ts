@@ -1,9 +1,9 @@
 export interface FormFieldItemProps {
   name: string;
   variant: 'mapped' | 'unmapped';
+  selected: boolean;
   onRemove?: () => void;
-  formData: FormData;
-  renderTree: (formData: FormData) => void;
+  onClick?: (fieldName: string) => void;
   className?: string;
 }
 
@@ -18,6 +18,7 @@ export type FormData = {
 export interface FormItem {
   name: string;
   type: 'mapped' | 'unmapped';
+  selected: boolean;
   mappedValue?: string
 }
 

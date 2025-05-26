@@ -9,24 +9,16 @@ import { useFormItems } from "~/hooks/useFormItems";
 import FormFieldItem from "~/components/FormFieldItem";
 
 const PrefilForm: React.FC<PrefilFormProps> = ({
-  initialItems = [
-    {
-      name: "dynamic_checkbox_group",
-      type: "unmapped",
-    },
-    {
-      name: "dynamic_object",
-      type: "mapped",
-    },
-  ],
+  initialItems = [],
   onEnabledChange,
   className,
   formData,
 }) => {
   // start component logic
   const [enabled, setEnabled] = useState<boolean>(true);
-  const { items, updateItem } = useFormItems(initialItems);
+  const { items, updateItem, setItems } = useFormItems(initialItems);
   const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
+  const [hasDeps, setHasDeps] = useState<boolean>(true);
 
   const handleEnabledChange = useCallback(
     (e: InputSwitchChangeEvent): void => {
@@ -55,7 +47,7 @@ const PrefilForm: React.FC<PrefilFormProps> = ({
 
   const handleRemoveItem = useCallback(
     (name: string): void => {
-      updateItem(name, { mappedValue: undefined });
+      updateItem(name, { mappedValue: undefined, selected: false });
     },
     [updateItem],
   );
@@ -89,16 +81,33 @@ const PrefilForm: React.FC<PrefilFormProps> = ({
     allTreeNodes.push(...iterateDeps(formData.direct_dependencies));
     allTreeNodes.push(...iterateDeps(formData.transient_dependencies));
 
+    // could sort by name instead of listing direct deps first.  if so uncomment below
+    // allTreeNodes = allTreeNodes.sort((a, b) =>
+    //   a.label!.localeCompare(b.label!),
+    // );
+
     console.log(allTreeNodes);
 
     setTreeNodes(allTreeNodes);
+    setHasDeps(allTreeNodes.length > 0);
     // get formData & render tree w/ that data
     // direct_dependencies
     console.log(formData);
     console.log(formData.direct_dependencies);
     console.log(formData.transient_dependencies);
+  }
 
-    setTreeNodes(treeNodes);
+  // unhighlight the last click & highlight this click so the user has UI feedback
+  // as to the form item they are currently selecting a prefill mapping for
+  function handleFormItemClick(fieldName: string) {
+    renderDepTree(formData);
+    setItems(
+      items.map((formItem: FormItem) => {
+        return formItem.name === fieldName
+          ? { ...formItem, selected: true }
+          : { ...formItem, selected: false };
+      }),
+    );
   }
 
   return (
@@ -112,8 +121,8 @@ const PrefilForm: React.FC<PrefilFormProps> = ({
       <div className="flex flex-col gap-3">
         {items.map((item: FormItem) => (
           <FormFieldItem
-            formData={formData}
-            renderTree={renderDepTree}
+            onClick={handleFormItemClick}
+            selected={item.selected}
             key={item.name}
             name={item.name}
             variant={item.type}
@@ -121,13 +130,23 @@ const PrefilForm: React.FC<PrefilFormProps> = ({
           />
         ))}
       </div>
-      <Tree
-        value={treeNodes}
-        filter
-        filterMode="strict"
-        filterPlaceholder="Strict Filter"
-        className="md:w-30rem w-full"
-      />
+      {treeNodes && treeNodes.length > 0 && (
+        <>
+          <div className="mt-5 text-xl font-bold">Prefill Sources</div>
+          <Tree
+            value={treeNodes}
+            filter
+            filterMode="strict"
+            filterPlaceholder="Strict Filter"
+            className="md:w-30rem mt-5! w-full"
+          />
+        </>
+      )}
+      {!hasDeps && (
+        <div className={"p-10 text-center text-2xl font-bold"}>
+          No dependency / inherritence data found
+        </div>
+      )}
     </Panel>
   );
 };

@@ -125,7 +125,7 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
     setFormData(prefillData);
     setInitialItems(
       formFields.map((el) => {
-        return { name: el, type: "unmapped" };
+        return { name: el, type: "unmapped", selected: false };
       }),
     );
 

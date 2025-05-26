@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import clsx from "clsx";
 import type { FormFieldItemProps } from "~/types/FormTypes";
@@ -8,28 +8,32 @@ const FormFieldItem: React.FC<FormFieldItemProps> = ({
   variant = "default",
   onRemove,
   className,
-  formData,
-  renderTree,
+  selected,
+  onClick,
 }) => {
+  const [clickedItem, setClickedItem] = useState("");
+
   const itemClasses = clsx(
     "flex flex-row justify-between p-3 rounded-xl transition-colors",
     {
       "border border-gray border-dashed hover:bg-sky-100 hover:cursor-pointer":
         variant === "unmapped",
       "border border-gray-400 bg-gray-200": variant === "mapped",
+      "bg-sky-100": selected,
     },
     className,
   );
 
-  function handleOnClick() {
-    renderTree(formData);
-  }
-
   return (
-    <div className={itemClasses} onClick={handleOnClick}>
-      <div className="align-items-center flex">
+    <div
+      className={itemClasses}
+      onClick={() => {
+        onClick?.(name);
+      }}
+    >
+      <div>
         <div>
-          <span className="text-color font-medium">{name}</span>
+          <span>{name}</span>
         </div>
       </div>
       {variant === "mapped" && (
