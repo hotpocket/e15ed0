@@ -197,7 +197,7 @@
       "field_schema": {
         "type": "object",
         "properties": {
-          "button": {
+          "button button who's got the button?": {
             "avantos_type": "button",
             "title": "Button",
             "type": "object"
