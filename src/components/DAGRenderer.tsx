@@ -114,7 +114,6 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
       return depsMap;
     };
 
-    // maybe expose this via onNodeClick so parent can handle the UI...
     const prefillData = {
       name: node.data.name,
       fields: formFields,
@@ -132,11 +131,7 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
     setDiagVisible(true);
 
     // logged to console for now. will use this to populate a UI in the next step
-    console.log({ [prefillData.name]: prefillData.fields });
-    console.log("Direct dependencies:");
-    console.log(prefillData.direct_dependencies);
-    console.log("Transitive dependencies:");
-    console.log(prefillData.transient_dependencies);
+    console.log(prefillData);
   }
 
   return (

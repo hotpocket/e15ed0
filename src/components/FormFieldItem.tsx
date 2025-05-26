@@ -4,22 +4,18 @@ import clsx from "clsx";
 import type { FormFieldItemProps } from "~/types/FormTypes";
 
 const FormFieldItem: React.FC<FormFieldItemProps> = ({
-  name,
-  variant = "default",
+  fieldData,
   onRemove,
   className,
-  selected,
   onClick,
 }) => {
-  const [clickedItem, setClickedItem] = useState("");
-
   const itemClasses = clsx(
     "flex flex-row justify-between p-3 rounded-xl transition-colors",
     {
       "border border-gray border-dashed hover:bg-sky-100 hover:cursor-pointer":
-        variant === "unmapped",
-      "border border-gray-400 bg-gray-200": variant === "mapped",
-      "bg-sky-100": selected,
+        fieldData.type !== "mapped",
+      "border border-gray-400 bg-gray-200": fieldData.type === "mapped",
+      "bg-sky-100": fieldData.selected && fieldData.type !== "mapped", // we should not be able to select something that is mapped
     },
     className,
   );
@@ -28,20 +24,24 @@ const FormFieldItem: React.FC<FormFieldItemProps> = ({
     <div
       className={itemClasses}
       onClick={() => {
-        onClick?.(name);
+        onClick?.(fieldData.name);
       }}
     >
       <div>
         <div>
-          <span>{name}</span>
+          <span>
+            {fieldData.type === "mapped"
+              ? fieldData.mappedValue
+              : fieldData.name}
+          </span>
         </div>
       </div>
-      {variant === "mapped" && (
+      {fieldData.type === "mapped" && (
         <Button
           icon="pi pi-times"
           className="w-auto! rounded-4xl! border-none! bg-gray-400! p-1.25! text-xs! hover:bg-red-300!"
           onClick={onRemove}
-          aria-label={`Remove ${name}`}
+          aria-label={`Remove ${fieldData.name}`}
         />
       )}
     </div>

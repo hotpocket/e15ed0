@@ -1,7 +1,5 @@
 export interface FormFieldItemProps {
-  name: string;
-  variant: 'mapped' | 'unmapped';
-  selected: boolean;
+  fieldData: FormItem;
   onRemove?: () => void;
   onClick?: (fieldName: string) => void;
   className?: string;

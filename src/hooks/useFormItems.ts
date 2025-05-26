@@ -12,8 +12,19 @@ export const useFormItems = (initialItems: FormItem[]) => {
     );
   }, []);
 
+    const getItem = useCallback((name: string): FormItem => {
+      for (const item of items) {
+        if (item?.name === name) {
+          return item;
+        }
+      }
+      return {name:"",type:'unmapped', selected:false}
+  }, [items]);
+
+
   return {
     items,
+    getItem,
     setItems,
     updateItem
   };
