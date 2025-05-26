@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import {
   ReactFlow,
   Controls,
@@ -10,17 +10,26 @@ import {
   useEdgesState,
   addEdge,
 } from "@xyflow/react";
+import { Dialog } from "primereact/dialog";
+import PrefilForm from "~/components/PrefilForm";
 import type { Node, Edge, Connection } from "@xyflow/react";
+import type { FormData, FormItem } from "~/types/FormTypes";
 import type {
   ActionBlueprintGraphDescription,
   ActionBlueprintGraphNodeDescription,
   ActionFormDescription,
 } from "~/types/ActionBlueprintGraphDescription";
-import "@xyflow/react/dist/style.css";
 
 const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
   graphData,
 }) => {
+  const [isDiagVisible, setDiagVisible] = useState(false);
+  const [formData, setFormData] = useState<FormData>({} as FormData);
+  const [formFields, setFormFields] = useState([]);
+  const [initialItems, setInitialItems] = useState<FormItem[]>(
+    [] as FormItem[],
+  );
+
   const initialNodes: Node[] =
     graphData.nodes?.map((node) => ({
       id: node.id,
@@ -64,8 +73,8 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
   }, [graphData.forms]);
 
   // walk the graph to find dependencies of a form node
-  function getFormDeps(formId: string): string[] {
-    const preReqIds = nodesById[formId]?.data.prerequisites ?? [];
+  function getFormDeps(nodeId: string): string[] {
+    const preReqIds = nodesById[nodeId]?.data.prerequisites ?? [];
     const formDeps = new Set<string>();
     for (const preReqId of preReqIds) {
       if (typeof preReqId === "string") {
@@ -74,7 +83,7 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
         formDeps.add(preReqId);
       }
     }
-    return [...formDeps];
+    return [...new Set(formDeps)];
   }
 
   // fetch and seperate direct & transient dependencies when a user clicks a node
@@ -113,6 +122,15 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
       transient_dependencies: iterateDeps(transDeps),
     };
 
+    setFormData(prefillData);
+    setInitialItems(
+      formFields.map((el) => {
+        return { name: el, type: "unmapped" };
+      }),
+    );
+
+    setDiagVisible(true);
+
     // logged to console for now. will use this to populate a UI in the next step
     console.log({ [prefillData.name]: prefillData.fields });
     console.log("Direct dependencies:");
@@ -137,6 +155,14 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
         <MiniMap />
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
       </ReactFlow>
+      <Dialog
+        header={`Prefill Mappings for ${formData.name}`}
+        visible={isDiagVisible}
+        style={{ width: "60vw" }}
+        onHide={() => isDiagVisible && setDiagVisible(false)}
+      >
+        <PrefilForm formData={formData} initialItems={initialItems} />
+      </Dialog>
     </div>
   );
 };

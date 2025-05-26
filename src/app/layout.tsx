@@ -1,5 +1,10 @@
 import "~/styles/globals.css";
 
+import "@xyflow/react/dist/style.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
