@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ReactFlow,
   Controls,
@@ -25,7 +25,6 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
 }) => {
   const [isDiagVisible, setDiagVisible] = useState(false);
   const [formData, setFormData] = useState<FormData>({} as FormData);
-  const [formFields, setFormFields] = useState([]);
   const [initialItems, setInitialItems] = useState<FormItem[]>(
     [] as FormItem[],
   );
@@ -46,8 +45,8 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
       animated: true,
     })) ?? [];
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes] = useNodesState(initialNodes);
+  const [edges, setEdges] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -141,8 +140,6 @@ const DAGRenderer: React.FC<{ graphData: ActionBlueprintGraphDescription }> = ({
         edges={edges}
         fitView
         onClick={genPrefillData}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         attributionPosition="bottom-left"
       >
